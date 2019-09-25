@@ -1,4 +1,3 @@
-
 <div class="row">
   <div class="alpha ten columns">
 
@@ -18,7 +17,10 @@
       <%= form.label :category_list, Spree.t(:category_list)  %><br />
       <%= form.text_field :category_list, :class => 'fullwidth' %>
     <% end %>
-
+    <%= form.field_container :featured_image do %>
+      <%= form.label :featured_image, Spree.t(:featured_image) %><br />
+      <%= form.file_field :avatar %>
+    <% end %>
     <%= form.field_container :tag_list do %>
       <%= form.label :tag_list, Spree.t(:tag_list) %><br />
       <%= form.text_field :tag_list, :class => 'fullwidth' %>
@@ -62,38 +64,19 @@
       <%= form.select :author_id, Spree.user_class.joins(:spree_roles).where("#{Spree::Role.table_name}.name" => "blogger").collect {|u| [u.email, u.id]}, {:include_blank => true}, :class => 'select2' %>
     <% end %>
 
-    <%= field_set_tag Spree.t(:blog_entry_featured_image) do %>
-      <% @blog_entry.build_blog_entry_image unless @blog_entry.blog_entry_image %>
-
-      <%= form.fields_for :blog_entry_image do |blog_entry_image_field| %>
-        <%= form.field_container :blog_entry_image_attachment do %>
-          <% unless @blog_entry.blog_entry_image.new_record? %>
-            <div class="blog_entry_image_thumbnail">
-              <%= link_to image_tag(@blog_entry.blog_entry_image.attachment.url(:mini)), @blog_entry.blog_entry_image.attachment.url(:large) %>
-              <%= @blog_entry.blog_entry_image.attachment_file_name %><br/>
-            </div>
-          <% end %>
-          <%= blog_entry_image_field.file_field :attachment %>
-        <% end %>
-
-        <%= form.field_container :blog_entry_image_alt do %>
-          <%= blog_entry_image_field.label :alt, Spree.t(:alt_text) %><br/>
-          <%= blog_entry_image_field.text_field :alt %>
-        <% end %>
-      <% end %>
-    <% end %>
-
   </div>
 </div>
 
-<%= form.field_container :body do %>
-  <%= form.label :body %> <span class="required">*</span><br />
-  <%= form.text_area :body, {:cols => 60, :rows => 4, :class => 'fullwidth', :id => 'blog_entry_body'} %>
-  <%= form.error_message_on :body %>
-<% end %>
+<div class="row">
+  <%= form.field_container :body do %>
+    <%= form.label :body %> <span class="required">*</span><br />
+    <%= form.text_area :body, {:cols => 60, :rows => 4, :class => 'fullwidth', :id => 'blog_entry_body'} %>
+    <%= form.error_message_on :body %>
+  <% end %>
 
-<%= form.field_container :summary do %>
-  <%= form.label :summary %><br />
-  <%= form.text_area :summary, {:cols => 60, :rows => 4, :class => 'fullwidth', :id => 'blog_entry_summary'} %>
-  <%= form.error_message_on :summary %>
-<% end %>
+  <%= form.field_container :summary do %>
+    <%= form.label :summary %><br />
+    <%= form.text_area :summary, {:cols => 60, :rows => 4, :class => 'fullwidth', :id => 'blog_entry_summary'} %>
+    <%= form.error_message_on :summary %>
+  <% end %>
+</div>
